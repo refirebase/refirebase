@@ -1,5 +1,5 @@
 {
-  "name": "refiredbase",
+  "name": "refirebase",
   "version": "0.0.1",
   "description": "🔥 New easiest Firebase API",
   "main": "index.js",
@@ -10,15 +10,15 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/gelzinn/refiredbase.git"
+    "url": "git+ssh://git@github.com/gelzinn/refirebase.git"
   },
   "keywords": [
     "react",
-    "refiredbase",
+    "refirebase",
     "firebase"
   ],
   "bugs": {
-    "url": "https://github.com/gelzinn/refiredbase/issues"
+    "url": "https://github.com/gelzinn/refirebase/issues"
   },
-  "homepage": "https://github.com/gelzinn/refiredbase#readme"
+  "homepage": "https://github.com/gelzinn/refirebase#readme"
 }
