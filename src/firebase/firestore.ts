@@ -12,14 +12,15 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-
 import { app } from ".";
+
+import { MESSAGES } from "../config/messages";
 
 export class FirestoreDatabase {
   db: FirebaseFirestore;
 
   constructor() {
-    if (!app) throw new Error("Firebase app not initialized");
+    if (!app) throw new Error(MESSAGES.FIREBASE_APP_NOT_INITIALIZED);
     this.db = getFirestore(app);
   }
 

@@ -2,6 +2,9 @@ import { initializeFirebase } from "./firebase";
 
 import { FirestoreDatabase } from "./firebase/firestore";
 import { RealtimeDatabase } from "./firebase/realtime";
+import { StorageFirebase } from "./firebase/storage";
+
+import { FirebaseAuth } from "./firebase/auth";
 
 export class Refirebase {
   private readonly config: {
@@ -14,8 +17,13 @@ export class Refirebase {
     appId: string;
   };
 
-  readonly firestore = new FirestoreDatabase();
-  readonly realtime = new RealtimeDatabase();
+  readonly db = {
+    firestore: new FirestoreDatabase(),
+    realtime: new RealtimeDatabase(),
+    storage: new StorageFirebase(),
+  };
+
+  readonly auth = new FirebaseAuth();
 
   constructor(config: {
     apiKey: string;
