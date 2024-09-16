@@ -1,5 +1,5 @@
 {
-  "name": "@gelzin/refiredbase",
+  "name": "refiredbase",
   "version": "0.0.1",
   "description": "New easiest Firebase API",
   "main": "index.js",
