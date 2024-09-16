@@ -2,23 +2,63 @@
   "name": "refirebase",
   "version": "0.0.1",
   "description": "🔥 New easiest Firebase API",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "gelzin.com",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "format:apply": "biome check --apply .",
+    "format:check": "biome format .",
+    "format": "biome format --write .",
+    "lint": "biome check .",
+    "prepublishOnly": "pnpm run build"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/gelzinn/refirebase.git"
+    "url": "git+ssh://git@github.com/refirebase/refirebase.git"
   },
   "keywords": [
-    "react",
     "refirebase",
-    "firebase"
+    "firebase",
+    "react"
   ],
+  "homepage": "https://github.com/refirebase/refirebase#readme",
   "bugs": {
-    "url": "https://github.com/gelzinn/refirebase/issues"
+    "url": "https://github.com/refirebase/refirebase/issues"
   },
-  "homepage": "https://github.com/gelzinn/refirebase#readme"
+  "devDependencies": {
+    "@biomejs/biome": "1.8.3",
+    "@types/jest": "29.5.12",
+    "@types/node": "18.19.44",
+    "@types/react": "18.3.3",
+    "jest": "29.7.0",
+    "jest-fetch-mock": "3.0.3",
+    "ts-jest": "29.2.4",
+    "ts-node": "10.9.2",
+    "tsup": "7.2.0",
+    "typescript": "5.5.4"
+  },
+  "packageManager": "pnpm@9.7.1"
 }
