@@ -1,6 +1,6 @@
 {
   "name": "refirebase",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "🔥 New easiest Firebase API",
   "author": "gelzin.com",
   "main": "./dist/index.js",
@@ -60,5 +60,8 @@
     "tsup": "7.2.0",
     "typescript": "5.5.4"
   },
-  "packageManager": "pnpm@9.7.1"
+  "packageManager": "pnpm@9.7.1",
+  "dependencies": {
+    "firebase": "^10.13.1"
+  }
 }

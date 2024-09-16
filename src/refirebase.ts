@@ -1,4 +1,7 @@
-import { version } from "../package.json";
+import { initializeFirebase } from "./firebase";
+
+import { FirestoreDatabase } from "./firebase/firestore";
+import { RealtimeDatabase } from "./firebase/realtime";
 
 export class Refirebase {
   private readonly config: {
@@ -10,6 +13,9 @@ export class Refirebase {
     messagingSenderId: string;
     appId: string;
   };
+
+  readonly firestore = new FirestoreDatabase();
+  readonly realtime = new RealtimeDatabase();
 
   constructor(config: {
     apiKey: string;
@@ -36,7 +42,6 @@ export class Refirebase {
 
     this.config = config;
 
-    console.log(`Refirebase version: ${version}`);
-    console.log("Firebase configuration:", this.config);
+    initializeFirebase(this.config);
   }
 }
