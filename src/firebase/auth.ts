@@ -5,12 +5,16 @@ import {
   GithubAuthProvider,
   GoogleAuthProvider,
   TwitterAuthProvider,
+  type User,
   type UserCredential,
   getAuth,
   onAuthStateChanged,
   onIdTokenChanged,
   signInWithPopup,
 } from "firebase/auth";
+import { app } from ".";
+
+import { MESSAGES } from "../config/messages";
 
 type Provider = "google" | "github" | "twitter" | "facebook";
 
@@ -18,7 +22,8 @@ export class FirebaseAuth {
   auth: Auth;
 
   constructor() {
-    this.auth = getAuth();
+    if (!app) throw new Error(MESSAGES.FIREBASE_APP_NOT_INITIALIZED);
+    this.auth = getAuth(app);
   }
 
   /**
@@ -29,8 +34,12 @@ export class FirebaseAuth {
   async handleProviderSignIn(
     provider: Provider
   ): Promise<UserCredential | null> {
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    let authProvider: any;
+    let authProvider:
+      | GoogleAuthProvider
+      | GithubAuthProvider
+      | TwitterAuthProvider
+      | FacebookAuthProvider
+      | null = null;
 
     switch (provider) {
       case "google":
@@ -94,7 +103,7 @@ export class FirebaseAuth {
    * Get the current user.
    * @returns The current user or null if the user is not signed in.
    */
-  getCurrentUser(): unknown | null {
+  getCurrentUser(): User | null {
     return this.auth.currentUser;
   }
 
@@ -110,7 +119,7 @@ export class FirebaseAuth {
    * Listen for changes to the user's sign-in state.
    * @param callback A function that takes the current user as an argument.
    */
-  onAuthStateChanged(callback: (user: unknown | null) => void): () => void {
+  onAuthStateChanged(callback: (user: User | null) => void): () => void {
     return onAuthStateChanged(this.auth, callback);
   }
 
@@ -118,7 +127,7 @@ export class FirebaseAuth {
    * Listen for changes to the user's ID token.
    * @param callback A function that takes the current user as an argument.
    */
-  onIdTokenChanged(callback: (user: unknown | null) => void): () => void {
+  onIdTokenChanged(callback: (user: User | null) => void): () => void {
     return onIdTokenChanged(this.auth, callback);
   }
 }
