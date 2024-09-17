@@ -50,7 +50,7 @@ You can use the `Refirebase` class to get the Firebase objects:
 
 ```javascript
 const refirebase = new Refirebase({
-    apiKey: 'YOUR_API_KEY',
+  apiKey: 'YOUR_API_KEY',
   authDomain: 'YOUR_AUTH_DOMAIN',
   databaseURL: 'YOUR_DATABASE_URL',
   projectId: 'YOUR_PROJECT_ID',
