@@ -1,3 +1,5 @@
+import type { FirebaseApp } from "firebase/app";
+
 import {
   type Database as FirebaseDatabase,
   get,
@@ -7,15 +9,17 @@ import {
   set,
   update,
 } from "firebase/database";
-import { app } from ".";
 
 import { MESSAGES } from "../config/messages";
 
 export class RealtimeDatabase {
   db: FirebaseDatabase;
 
-  constructor() {
-    if (!app) throw new Error(MESSAGES.FIREBASE_APP_NOT_INITIALIZED);
+  constructor(app: FirebaseApp) {
+    if (!app) {
+      throw new Error(MESSAGES.FIREBASE_APP_NOT_INITIALIZED);
+    }
+
     this.db = getDatabase(app);
   }
 

@@ -1,3 +1,5 @@
+import type { FirebaseApp } from "firebase/app";
+
 import {
   type FirebaseStorage,
   deleteObject,
@@ -6,15 +8,17 @@ import {
   ref,
   uploadBytes,
 } from "firebase/storage";
-import { app } from ".";
 
 import { MESSAGES } from "../config/messages";
 
 export class StorageFirebase {
   storage: FirebaseStorage;
 
-  constructor() {
-    if (!app) throw new Error(MESSAGES.FIREBASE_APP_NOT_INITIALIZED);
+  constructor(app: FirebaseApp) {
+    if (!app) {
+      throw new Error(MESSAGES.FIREBASE_APP_NOT_INITIALIZED);
+    }
+
     this.storage = getStorage(app);
   }
 

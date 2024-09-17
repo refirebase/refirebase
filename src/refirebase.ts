@@ -6,6 +6,8 @@ import { StorageFirebase } from "./firebase/storage";
 
 import { FirebaseAuth } from "./firebase/auth";
 
+import type { FirebaseApp } from "firebase/app";
+
 export class Refirebase {
   private readonly config: {
     apiKey: string;
@@ -17,13 +19,15 @@ export class Refirebase {
     appId: string;
   };
 
-  readonly db = {
-    firestore: new FirestoreDatabase(),
-    realtime: new RealtimeDatabase(),
-    storage: new StorageFirebase(),
+  private readonly app: FirebaseApp;
+
+  readonly db: {
+    firestore: FirestoreDatabase;
+    realtime: RealtimeDatabase;
+    storage: StorageFirebase;
   };
 
-  readonly auth = new FirebaseAuth();
+  readonly auth: FirebaseAuth;
 
   constructor(config: {
     apiKey: string;
@@ -50,6 +54,14 @@ export class Refirebase {
 
     this.config = config;
 
-    initializeFirebase(this.config);
+    this.app = initializeFirebase(this.config);
+
+    this.db = {
+      firestore: new FirestoreDatabase(this.app),
+      realtime: new RealtimeDatabase(this.app),
+      storage: new StorageFirebase(this.app),
+    };
+
+    this.auth = new FirebaseAuth(this.app);
   }
 }

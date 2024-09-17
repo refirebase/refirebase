@@ -1,3 +1,5 @@
+import type { FirebaseApp } from "firebase/app";
+
 import {
   type Auth,
   EmailAuthProvider,
@@ -12,7 +14,6 @@ import {
   onIdTokenChanged,
   signInWithPopup,
 } from "firebase/auth";
-import { app } from ".";
 
 import { MESSAGES } from "../config/messages";
 
@@ -21,8 +22,11 @@ type Provider = "google" | "github" | "twitter" | "facebook";
 export class FirebaseAuth {
   auth: Auth;
 
-  constructor() {
-    if (!app) throw new Error(MESSAGES.FIREBASE_APP_NOT_INITIALIZED);
+  constructor(app: FirebaseApp) {
+    if (!app) {
+      throw new Error(MESSAGES.FIREBASE_APP_NOT_INITIALIZED);
+    }
+
     this.auth = getAuth(app);
   }
 

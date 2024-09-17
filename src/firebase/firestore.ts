@@ -1,3 +1,5 @@
+import type { FirebaseApp } from "firebase/app";
+
 import {
   type Firestore as FirebaseFirestore,
   type WhereFilterOp as WhereFilterOperator,
@@ -12,15 +14,17 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { app } from ".";
 
 import { MESSAGES } from "../config/messages";
 
 export class FirestoreDatabase {
   db: FirebaseFirestore;
 
-  constructor() {
-    if (!app) throw new Error(MESSAGES.FIREBASE_APP_NOT_INITIALIZED);
+  constructor(app: FirebaseApp) {
+    if (!app) {
+      throw new Error(MESSAGES.FIREBASE_APP_NOT_INITIALIZED);
+    }
+
     this.db = getFirestore(app);
   }
 
