@@ -5,12 +5,13 @@ let app: FirebaseApp | null = null;
 
 export function initializeFirebase(config: {
   apiKey: string;
+  appId: string;
   authDomain: string;
   databaseURL: string;
   projectId: string;
   storageBucket: string;
   messagingSenderId: string;
-  appId: string;
+  measurementId?: string;
 }) {
   if (app) return app;
 

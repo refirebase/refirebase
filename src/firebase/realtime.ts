@@ -17,7 +17,7 @@ export class RealtimeDatabase {
 
   constructor(app: FirebaseApp) {
     if (!app) {
-      throw new Error(MESSAGES.FIREBASE_APP_NOT_INITIALIZED);
+      throw new Error(MESSAGES.FIREBASE.APP_NOT_INITIALIZED);
     }
 
     this.db = getDatabase(app);

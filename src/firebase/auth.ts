@@ -24,7 +24,7 @@ export class FirebaseAuth {
 
   constructor(app: FirebaseApp) {
     if (!app) {
-      throw new Error(MESSAGES.FIREBASE_APP_NOT_INITIALIZED);
+      throw new Error(MESSAGES.FIREBASE.APP_NOT_INITIALIZED);
     }
 
     this.auth = getAuth(app);
@@ -63,13 +63,13 @@ export class FirebaseAuth {
     }
 
     if (!authProvider) {
-      throw new Error(`Invalid provider: ${provider}`);
+      throw new Error(MESSAGES.AUTH.INVALID_PROVIDER(provider));
     }
 
     try {
       return await signInWithPopup(this.auth, authProvider);
     } catch (error) {
-      console.error(`Error signing in with ${provider}:`, error);
+      console.error(MESSAGES.AUTH.SIGNIN_FAILED(provider), error);
       return null;
     }
   }
@@ -90,7 +90,7 @@ export class FirebaseAuth {
         EmailAuthProvider.credential(email, password)
       );
     } catch (error) {
-      console.error("Error signing in with email:", error);
+      console.error(MESSAGES.AUTH.SIGNIN_FAILED("email"), error);
       return null;
     }
   }

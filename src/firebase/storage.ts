@@ -16,7 +16,7 @@ export class StorageFirebase {
 
   constructor(app: FirebaseApp) {
     if (!app) {
-      throw new Error(MESSAGES.FIREBASE_APP_NOT_INITIALIZED);
+      throw new Error(MESSAGES.FIREBASE.APP_NOT_INITIALIZED);
     }
 
     this.storage = getStorage(app);
@@ -33,6 +33,16 @@ export class StorageFirebase {
     }
   }
 
+  async get(filePath: string): Promise<string> {
+    try {
+      const storageRef = ref(this.storage, filePath);
+      const downloadURL = await getDownloadURL(storageRef);
+      return downloadURL;
+    } catch (error) {
+      throw new Error(MESSAGES.STORAGE.GET_FAILED);
+    }
+  }
+
   async update(filePath: string, file: Blob): Promise<string> {
     try {
       const storageRef = ref(this.storage, filePath);
@@ -41,16 +51,6 @@ export class StorageFirebase {
       return downloadURL;
     } catch (error) {
       throw new Error(MESSAGES.STORAGE.UPDATE_FAILED);
-    }
-  }
-
-  async get(filePath: string): Promise<string> {
-    try {
-      const storageRef = ref(this.storage, filePath);
-      const downloadURL = await getDownloadURL(storageRef);
-      return downloadURL;
-    } catch (error) {
-      throw new Error(MESSAGES.STORAGE.GET_FAILED);
     }
   }
 
