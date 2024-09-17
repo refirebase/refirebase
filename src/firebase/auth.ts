@@ -12,7 +12,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 
-type Provider = "google" | "github" | "twitter" | "facebook" | "email";
+type Provider = "google" | "github" | "twitter" | "facebook";
 
 export class FirebaseAuth {
   auth: Auth;
@@ -45,9 +45,6 @@ export class FirebaseAuth {
       case "facebook":
         authProvider = new FacebookAuthProvider();
         break;
-      case "email":
-        authProvider = new EmailAuthProvider();
-        break;
       default:
         return null;
     }
@@ -60,6 +57,27 @@ export class FirebaseAuth {
       return await signInWithPopup(this.auth, authProvider);
     } catch (error) {
       console.error(`Error signing in with ${provider}:`, error);
+      return null;
+    }
+  }
+
+  /**
+   * Sign in with an email and password.
+   * @param email The user's email address.
+   * @param password The user's password.
+   * @returns A promise that resolves with the user credential or null if the sign-in fails.
+   */
+  async handleEmailSignIn(
+    email: string,
+    password: string
+  ): Promise<UserCredential | null> {
+    try {
+      return await signInWithPopup(
+        this.auth,
+        EmailAuthProvider.credential(email, password)
+      );
+    } catch (error) {
+      console.error("Error signing in with email:", error);
       return null;
     }
   }
