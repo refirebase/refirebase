@@ -20,7 +20,7 @@ import { MESSAGES } from "../config/messages";
 type Provider = "google" | "github" | "twitter" | "facebook";
 
 export class FirebaseAuth {
-  auth: Auth;
+  private readonly auth: Auth;
 
   constructor(app: FirebaseApp) {
     if (!app) {
