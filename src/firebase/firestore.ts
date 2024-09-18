@@ -28,44 +28,43 @@ export class FirestoreDatabase {
     this.db = getFirestore(app);
   }
 
+  /**
+   * Retrieves data from the Firebase Firestore.
+   *
+   * @param collectionName - The name of the collection to retrieve data from.
+   * @param docId - Optional ID of the document to retrieve.
+   * @param conditions - Optional array of conditions to filter the data by.
+   *
+   * @returns The data at the specified path or null if the data does not exist.
+   */
   async get(
     collectionName: string,
-    docId?: string
-  ): Promise<unknown | unknown[] | null | { error: unknown }> {
-    try {
-      if (docId) {
-        const docRef = doc(this.db, collectionName, docId);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) return { id: docSnap.id, ...docSnap.data() };
-        return null;
-      }
-
-      const collectionRef = collection(this.db, collectionName);
-      const querySnapshot = await getDocs(collectionRef);
-
-      return querySnapshot.empty
-        ? []
-        : querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    } catch (error) {
-      return { error };
-    }
-  }
-
-  async find(
-    collectionName: string,
-    conditions: {
+    docId?: string,
+    conditions?: {
       field: string;
       operator: WhereFilterOperator;
       value: unknown;
     }[]
-  ): Promise<unknown[] | { error: unknown }> {
+  ): Promise<unknown | unknown[] | null | { error: unknown }> {
     try {
       const collectionRef = collection(this.db, collectionName);
-      const q = conditions.reduce(
-        (q, { field, operator, value }) =>
-          query(q, where(field, operator, value)),
-        query(collectionRef)
-      );
+
+      // If docId is provided, fetch the specific document
+      if (docId) {
+        const docRef = doc(this.db, collectionName, docId);
+        const docSnap = await getDoc(docRef);
+        return docSnap.exists() ? { id: docSnap.id, ...docSnap.data() } : null;
+      }
+
+      // If conditions are provided, apply them
+      const q = conditions
+        ? conditions.reduce(
+            (q, { field, operator, value }) =>
+              query(q, where(field, operator, value)),
+            query(collectionRef)
+          )
+        : query(collectionRef);
+
       const querySnapshot = await getDocs(q);
       return querySnapshot.empty
         ? []
@@ -75,6 +74,15 @@ export class FirestoreDatabase {
     }
   }
 
+  /**
+   * Adds data to the Firebase Firestore.
+   *
+   * @param collection_name - The name of the collection to add data to.
+   * @param data - The data to add to the collection.
+   * @param id - The ID of the document to add the data to.
+   *
+   * @returns The data that was added to the collection or an error object if the operation fails.
+   */
   async add(
     collection_name: string,
     data: unknown,
@@ -99,6 +107,15 @@ export class FirestoreDatabase {
     }
   }
 
+  /**
+   * Updates data in the Firebase Firestore.
+   *
+   * @param collection_name - The name of the collection to update data in.
+   * @param doc_id - The ID of the document to update.
+   * @param data - The data to update in the document.
+   *
+   * @returns An error object if the operation fails.
+   */
   async set(
     collection: string,
     docId: string,
@@ -111,6 +128,15 @@ export class FirestoreDatabase {
     }
   }
 
+  /**
+   * Updates data in the Firebase Firestore.
+   *
+   * @param collection - The name of the collection to update data in.
+   * @param docId - The ID of the document to update.
+   * @param data - The data to update in the document.
+   *
+   * @returns An error object if the operation fails.
+   */
   async update(
     collection: string,
     docId: string,
@@ -123,6 +149,14 @@ export class FirestoreDatabase {
     }
   }
 
+  /**
+   * Deletes data from the Firebase Firestore.
+   *
+   * @param collection - The name of the collection to delete data from.
+   * @param docId - The ID of the document to delete.
+   *
+   * @returns An error object if the operation fails.
+   */
   async delete(
     collection: string,
     docId: string

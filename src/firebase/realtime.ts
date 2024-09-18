@@ -23,6 +23,12 @@ export class RealtimeDatabase {
     this.db = getDatabase(app);
   }
 
+  /**
+   * Retrieves data from the Firebase Realtime Database.
+   *
+   * @param path - The path to the data in the database.
+   * @returns The data at the specified path or null if the data does not exist.
+   */
   async get(path: string): Promise<unknown | { error: unknown }> {
     try {
       const snapshot = await get(ref(this.db, path));
@@ -32,6 +38,14 @@ export class RealtimeDatabase {
     }
   }
 
+  /**
+   * Sets data in the Firebase Realtime Database.
+   *
+   * @param path - The path to the data in the database.
+   * @param data - The data to set.
+   *
+   * @returns An error object if the operation fails.
+   */
   async set(
     path: string,
     data: unknown
@@ -43,6 +57,14 @@ export class RealtimeDatabase {
     }
   }
 
+  /**
+   * Updates data in the Firebase Realtime Database.
+   *
+   * @param path - The path to the data in the database.
+   * @param data - The data to update.
+   *
+   * @returns An error object if the operation fails.
+   */
   async update(
     path: string,
     data: object
@@ -54,6 +76,12 @@ export class RealtimeDatabase {
     }
   }
 
+  /**
+   * Deletes data from the Firebase Realtime Database.
+   *
+   * @param path - The path to the data in the database.
+   * @returns An error object if the operation fails.
+   */
   async delete(path: string): Promise<undefined | { error: unknown }> {
     try {
       await remove(ref(this.db, path));

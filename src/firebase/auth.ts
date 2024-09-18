@@ -32,6 +32,7 @@ export class FirebaseAuth {
 
   /**
    * Sign in with a third-party provider.
+   *
    * @param provider The provider to sign in with.
    * @returns A promise that resolves with the user credential or null if the sign-in fails.
    */
@@ -62,7 +63,17 @@ export class FirebaseAuth {
         return null;
     }
 
-    if (!authProvider) {
+    const validProviders = [
+      GoogleAuthProvider,
+      GithubAuthProvider,
+      TwitterAuthProvider,
+      FacebookAuthProvider,
+    ];
+
+    if (
+      !authProvider ||
+      !validProviders.some((provider) => authProvider instanceof provider)
+    ) {
       throw new Error(MESSAGES.AUTH.INVALID_PROVIDER(provider));
     }
 
@@ -76,8 +87,10 @@ export class FirebaseAuth {
 
   /**
    * Sign in with an email and password.
+   *
    * @param email The user's email address.
    * @param password The user's password.
+   *
    * @returns A promise that resolves with the user credential or null if the sign-in fails.
    */
   async handleEmailSignIn(

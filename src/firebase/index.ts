@@ -1,18 +1,11 @@
+import type { FirebaseConfig } from "../types/firebase-config";
+
 import { type FirebaseApp, initializeApp } from "firebase/app";
 import { FirebaseError } from "firebase/app";
 
 let app: FirebaseApp | null = null;
 
-export function initializeFirebase(config: {
-  apiKey: string;
-  appId: string;
-  authDomain: string;
-  databaseURL?: string;
-  projectId: string;
-  storageBucket: string;
-  messagingSenderId: string;
-  measurementId?: string;
-}) {
+export function init(config: FirebaseConfig) {
   if (app) return app;
 
   try {

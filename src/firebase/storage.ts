@@ -22,6 +22,12 @@ export class StorageFirebase {
     this.storage = getStorage(app);
   }
 
+  /**
+   * Uploads a file to the Firebase Storage.
+   *
+   * @param filePath - The path to the file in the storage bucket.
+   * @param file - The file to upload.
+   */
   async upload(filePath: string, file: Blob): Promise<string> {
     try {
       const storageRef = ref(this.storage, filePath);
@@ -33,6 +39,12 @@ export class StorageFirebase {
     }
   }
 
+  /**
+   * Retrieves a file from the Firebase Storage.
+   *
+   * @param filePath - The path to the file in the storage bucket.
+   * @returns The download URL of the file.
+   */
   async get(filePath: string): Promise<string> {
     try {
       const storageRef = ref(this.storage, filePath);
@@ -43,6 +55,12 @@ export class StorageFirebase {
     }
   }
 
+  /**
+   * Updates a file in the Firebase Storage.
+   *
+   * @param filePath - The path to the file in the storage bucket.
+   * @param file - The file to update.
+   */
   async update(filePath: string, file: Blob): Promise<string> {
     try {
       const storageRef = ref(this.storage, filePath);
@@ -54,6 +72,12 @@ export class StorageFirebase {
     }
   }
 
+  /**
+   * Deletes a file from the Firebase Storage.
+   *
+   * @param filePath - The path to the file in the storage bucket.
+   * @returns A promise that resolves when the file is deleted.
+   */
   async delete(filePath: string): Promise<void> {
     try {
       const storageRef = ref(this.storage, filePath);

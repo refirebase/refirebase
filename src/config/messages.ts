@@ -28,4 +28,9 @@ export const MESSAGES = {
     UPDATE_FAILED: "Failed to update user.",
     INVALID_PROVIDER: (provider: string) => `Invalid provider: ${provider}.`,
   },
+  ANALYTICS: {
+    EVENT_NAME_REQUIRED: "Event name is required.",
+    USER_ID_REQUIRED: "User ID is required.",
+    USER_PROPERTIES_REQUIRED: "User properties are required.",
+  },
 };
