@@ -26,7 +26,21 @@ export class FirestoreDatabase {
     }
 
     this.db = getFirestore(app);
+
+    /**
+     * Get all collections from Firestore
+     */
+    FirestoreDatabase.GET_ALL_COLLECTIONS(this.db)
+      .then(console.log)
+      .catch(console.error);
   }
+
+  private static GET_ALL_COLLECTIONS = async (
+    db: FirebaseFirestore
+  ): Promise<string[]> => {
+    const collections = await getDocs(collection(db, "test"));
+    return collections.docs.map((doc) => doc.id);
+  };
 
   async get(
     collectionName: string,
