@@ -8,8 +8,12 @@
 </p>
 
 <p align="center">
-<img src="https://img.shields.io/npm/v/refirebase.svg">
-<img src="https://img.shields.io/npm/l/refirebase.svg">
+  <a href="https://www.npmjs.com/refirebase">
+    <img src="https://img.shields.io/npm/v/refirebase.svg">
+  </a>
+  <a href="https://github.com/refirebase/refirebase?tab=MIT-1-ov-file">
+    <img src="https://img.shields.io/npm/l/refirebase.svg">
+  </a>
 </p>
 
 Refirebase is a simple library that allows you to use Firebase Realtime Database, Firestore, Storage and Authentication as a state management solution in your JavaScript application.
