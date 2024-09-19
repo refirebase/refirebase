@@ -27,6 +27,7 @@ export const MESSAGES = {
     DELETE_FAILED: "Failed to delete user.",
     UPDATE_FAILED: "Failed to update user.",
     INVALID_PROVIDER: (provider: string) => `Invalid provider: ${provider}.`,
+    INVALID_SCOPE: (scope: string) => `Invalid scope: ${scope}.`,
   },
   ANALYTICS: {
     EVENT_NAME_REQUIRED: "Event name is required.",

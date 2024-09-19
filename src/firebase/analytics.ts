@@ -32,7 +32,6 @@ export class FirebaseAnalytics {
    */
   log(
     eventName: string,
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     eventParams?: { [key: string]: any },
     options?: AnalyticsCallOptions
   ): void {
@@ -72,7 +71,6 @@ export class FirebaseAnalytics {
    * @param options - The options for updating the properties.
    */
   updateUserProperties(
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     properties: { [key: string]: any },
     options?: AnalyticsCallOptions
   ): void {

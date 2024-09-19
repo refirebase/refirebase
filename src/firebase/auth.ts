@@ -34,10 +34,13 @@ export class FirebaseAuth {
    * Sign in with a third-party provider.
    *
    * @param provider The provider to sign in with.
+   * @param options The options for signing in with the provider.
+   *
    * @returns A promise that resolves with the user credential or null if the sign-in fails.
    */
   async handleProviderSignIn(
-    provider: Provider
+    provider: Provider,
+    options?: { scopes?: string[] }
   ): Promise<UserCredential | null> {
     let authProvider:
       | GoogleAuthProvider
@@ -75,6 +78,18 @@ export class FirebaseAuth {
       !validProviders.some((provider) => authProvider instanceof provider)
     ) {
       throw new Error(MESSAGES.AUTH.INVALID_PROVIDER(provider));
+    }
+
+    if (options) {
+      if (options.scopes) {
+        const { scopes } = options;
+
+        for (const scope of scopes) {
+          if (typeof scope !== "string") {
+            throw new Error(MESSAGES.AUTH.INVALID_SCOPE(scope));
+          }
+        }
+      }
     }
 
     try {

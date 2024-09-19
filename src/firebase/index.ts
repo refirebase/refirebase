@@ -1,11 +1,11 @@
 import type { FirebaseConfig } from "../types/firebase-config";
 
-import { type FirebaseApp, initializeApp } from "firebase/app";
+import { type FirebaseApp, deleteApp, initializeApp } from "firebase/app";
 import { FirebaseError } from "firebase/app";
 
 let app: FirebaseApp | null = null;
 
-export function init(config: FirebaseConfig) {
+function init(config: FirebaseConfig) {
   if (app) return app;
 
   try {
@@ -21,4 +21,18 @@ export function init(config: FirebaseConfig) {
   return app;
 }
 
-export { app };
+async function destroy() {
+  if (!app) return;
+
+  try {
+    await deleteApp(app);
+  } catch (error) {
+    if (error instanceof FirebaseError) {
+      throw new Error(`x Firebase destruction error: ${error.message}`);
+    }
+
+    throw new Error(`x Firebase destruction unexpected error: ${error}`);
+  }
+}
+
+export { init, destroy };
