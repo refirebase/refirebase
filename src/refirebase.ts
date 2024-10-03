@@ -1,27 +1,27 @@
-import { init } from "./firebase";
-import type { FirebaseConfig } from "./types/firebase-config";
+import { init } from './firebase';
+import type { FirebaseConfig } from './types/firebase-config';
 
-import { FirestoreDatabase } from "./firebase/firestore";
-import { RealtimeDatabase } from "./firebase/realtime";
-import { StorageFirebase } from "./firebase/storage";
+import { FirestoreDatabase } from './firebase/firestore';
+import { RealtimeDatabase } from './firebase/realtime';
+import { StorageFirebase } from './firebase/storage';
 
-import { FirebaseAnalytics } from "./firebase/analytics";
-import { FirebaseAuth } from "./firebase/auth";
+import { FirebaseAnalytics } from './firebase/analytics';
+import { FirebaseAuth } from './firebase/auth';
 
-import type { FirebaseApp } from "firebase/app";
+import type { FirebaseApp } from 'firebase/app';
 
 export class Refirebase {
   private readonly config: FirebaseConfig;
   private readonly app: FirebaseApp;
 
-  readonly db: {
+  public readonly db: {
     firestore: FirestoreDatabase;
     realtime: RealtimeDatabase;
     storage: StorageFirebase;
   };
 
-  readonly auth: FirebaseAuth;
-  readonly analytics: FirebaseAnalytics;
+  public readonly auth: FirebaseAuth;
+  public readonly analytics: FirebaseAnalytics;
 
   constructor(config: FirebaseConfig) {
     if (
@@ -33,7 +33,7 @@ export class Refirebase {
       !config.appId
     ) {
       throw new Error(
-        "Missing Firebase configuration keys. Please provide all required keys."
+        'Missing Firebase configuration keys. Please provide all required keys.',
       );
     }
 
@@ -51,3 +51,13 @@ export class Refirebase {
     this.analytics = new FirebaseAnalytics(this.app);
   }
 }
+
+export type {
+  FirebaseConfig as RefirebaseConfig,
+  FirebaseApp as RefirebaseApp,
+  FirestoreDatabase as RefirebaseFirestore,
+  RealtimeDatabase as RefirebaseRealtime,
+  StorageFirebase as RefirebaseStorage,
+  FirebaseAuth as RefirebaseAuth,
+  FirebaseAnalytics as RefirebaseAnalytics,
+};
