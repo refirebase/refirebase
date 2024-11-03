@@ -122,7 +122,11 @@ export class FirestoreDatabase {
     data: unknown
   ): Promise<undefined | { error: unknown }> {
     try {
-      await setDoc(doc(this.db, collection, docId), data);
+      const timestamp = new Date().toISOString();
+      await setDoc(doc(this.db, collection, docId), {
+        ...data,
+        updated_at: timestamp,
+      });
     } catch (error) {
       return { error };
     }
@@ -143,7 +147,11 @@ export class FirestoreDatabase {
     data: object
   ): Promise<undefined | { error: unknown }> {
     try {
-      await updateDoc(doc(this.db, collection, docId), data);
+      const timestamp = new Date().toISOString();
+      await updateDoc(doc(this.db, collection, docId), {
+        ...data,
+        updated_at: timestamp,
+      });
     } catch (error) {
       return { error };
     }
