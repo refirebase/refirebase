@@ -4,6 +4,7 @@ import {
   type Database as FirebaseDatabase,
   get,
   getDatabase,
+  onValue,
   ref,
   remove,
   set,
@@ -36,6 +37,16 @@ export class RealtimeDatabase {
     } catch (error) {
       return { error };
     }
+  }
+
+  async onValue(path: string, callback: (data: unknown) => void) {
+    const dbRef = ref(this.db, path);
+    const snapshot = await get(dbRef);
+    callback(snapshot.val());
+
+    return onValue(dbRef, (snapshot) => {
+      callback(snapshot.val());
+    });
   }
 
   /**
