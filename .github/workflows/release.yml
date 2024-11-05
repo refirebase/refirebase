@@ -25,7 +25,24 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Check existing version
+        run: |
+          existing_version=$(npm show refirebase version)
+          target_version=$(jq -r '.version' package.json)
+          if [ "$existing_version" == "$target_version" ]; then
+            echo "Version $target_version already exists. Please update the version in package.json."
+            exit 1
+          fi
+
       - name: Publish package
-        run: pnpm publish
+        run: |
+          if ! pnpm publish --verbose; then
+            echo "Error: Failed to publish the package."
+            echo "Possible reasons:"
+            echo "- You might be trying to publish an already existing version."
+            echo "- Check your permissions for the npm registry."
+            echo "- Ensure your package.json is correctly configured."
+            exit 1
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
