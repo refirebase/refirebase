@@ -1,14 +1,12 @@
 {
   "name": "refirebase",
-  "version": "0.0.63",
+  "version": "0.0.64",
   "description": "🔥 New easiest Firebase API",
   "author": "gelzin.com",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "files": [
-    "dist/**"
-  ],
+  "files": ["dist/**"],
   "engines": {
     "node": ">=18"
   },
@@ -42,7 +40,14 @@
   "keywords": [
     "refirebase",
     "firebase",
-    "react"
+    "react",
+    "vite",
+    "svelte",
+    "angular",
+    "vue",
+    "next",
+    "typescript",
+    "javascript"
   ],
   "homepage": "https://refirebase.github.io",
   "bugs": {
