@@ -1,4 +1,4 @@
-import type { FirebaseApp } from "firebase/app";
+import type { FirebaseApp } from 'firebase/app';
 
 import {
   type Firestore as FirebaseFirestore,
@@ -13,9 +13,9 @@ import {
   setDoc,
   updateDoc,
   where,
-} from "firebase/firestore";
+} from 'firebase/firestore';
 
-import { MESSAGES } from "../config/messages";
+import { MESSAGES } from '../config/messages';
 
 export class FirestoreDatabase {
   db: FirebaseFirestore;
@@ -44,7 +44,7 @@ export class FirestoreDatabase {
       field: string;
       operator: WhereFilterOperator;
       value: unknown;
-    }[]
+    }[],
   ): Promise<unknown | unknown[] | null | { error: unknown }> {
     try {
       const collectionRef = collection(this.db, collectionName);
@@ -53,7 +53,13 @@ export class FirestoreDatabase {
       if (docId) {
         const docRef = doc(this.db, collectionName, docId);
         const docSnap = await getDoc(docRef);
-        return docSnap.exists() ? { id: docSnap.id, ...docSnap.data() } : null;
+
+        return docSnap.exists()
+          ? {
+              id: docSnap.id,
+              ...docSnap.data(),
+            }
+          : null;
       }
 
       // If conditions are provided, apply them
@@ -61,7 +67,7 @@ export class FirestoreDatabase {
         ? conditions.reduce(
             (q, { field, operator, value }) =>
               query(q, where(field, operator, value)),
-            query(collectionRef)
+            query(collectionRef),
           )
         : query(collectionRef);
 
@@ -86,7 +92,7 @@ export class FirestoreDatabase {
   async add(
     collection_name: string,
     data: unknown,
-    id?: string
+    id?: string,
   ): Promise<unknown | { error: unknown }> {
     try {
       const docRef = id
@@ -94,14 +100,14 @@ export class FirestoreDatabase {
         : doc(collection(this.db, collection_name));
 
       const timestamp = new Date().toISOString();
-      const dataObject = typeof data === "object" ? data : {};
+      const object = typeof data === 'object' ? data : {};
 
       await setDoc(docRef, {
-        ...dataObject,
+        ...object,
         created_at: timestamp,
         updated_at: timestamp,
       });
-      return { id: docRef.id, ...dataObject };
+      return { id: docRef.id, ...object };
     } catch (error) {
       return { error };
     }
@@ -119,12 +125,14 @@ export class FirestoreDatabase {
   async set(
     collection: string,
     docId: string,
-    data: unknown
+    data: unknown,
   ): Promise<undefined | { error: unknown }> {
     try {
       const timestamp = new Date().toISOString();
+      const object = typeof data === 'object' ? data : {};
+
       await setDoc(doc(this.db, collection, docId), {
-        ...data,
+        ...object,
         updated_at: timestamp,
       });
     } catch (error) {
@@ -144,12 +152,14 @@ export class FirestoreDatabase {
   async update(
     collection: string,
     docId: string,
-    data: object
+    data: object,
   ): Promise<undefined | { error: unknown }> {
     try {
       const timestamp = new Date().toISOString();
+      const object = typeof data === 'object' ? data : {};
+
       await updateDoc(doc(this.db, collection, docId), {
-        ...data,
+        ...object,
         updated_at: timestamp,
       });
     } catch (error) {
@@ -167,7 +177,7 @@ export class FirestoreDatabase {
    */
   async delete(
     collection: string,
-    docId: string
+    docId: string,
   ): Promise<undefined | { error: unknown }> {
     try {
       await deleteDoc(doc(this.db, collection, docId));
