@@ -63,5 +63,9 @@
   "packageManager": "pnpm@9.7.1",
   "dependencies": {
     "firebase": "^10.13.1"
-  }
+  },
+  "trustedDependencies": [
+    "@biomejs/biome",
+    "protobufjs"
+  ]
 }
