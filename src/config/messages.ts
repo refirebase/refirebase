@@ -33,5 +33,6 @@ export const MESSAGES = {
     EVENT_NAME_REQUIRED: "Event name is required.",
     USER_ID_REQUIRED: "User ID is required.",
     USER_PROPERTIES_REQUIRED: "User properties are required.",
+    ANALYTICS_NOT_INITIALIZED: "Analytics was not properly initialized.",
   },
 };

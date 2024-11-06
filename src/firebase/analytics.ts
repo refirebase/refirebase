@@ -13,14 +13,22 @@ import {
 import { MESSAGES } from "../config/messages";
 
 export class FirebaseAnalytics {
-  private readonly analytics: Analytics;
+  private readonly analytics: Analytics | null;
 
   constructor(app: FirebaseApp) {
     if (!app) {
       throw new Error(MESSAGES.FIREBASE.APP_NOT_INITIALIZED);
     }
 
-    this.analytics = getAnalytics(app);
+    /**
+    * Prevent analytics from being initialized in a non-browser environment.
+    */
+
+    if(typeof window !== 'undefined') {
+      this.analytics = getAnalytics(app);
+    } else {
+      this.analytics = null;
+    }
   }
 
   /**
@@ -39,6 +47,10 @@ export class FirebaseAnalytics {
       throw new Error(MESSAGES.ANALYTICS.EVENT_NAME_REQUIRED);
     }
 
+    if(!this.analytics) {
+      throw new Error(MESSAGES.ANALYTICS.ANALYTICS_NOT_INITIALIZED);
+    }
+
     logEvent(this.analytics, eventName, eventParams, options);
   }
 
@@ -47,6 +59,9 @@ export class FirebaseAnalytics {
    * @param isEnabled - Whether analytics data collection is enabled.
    */
   toggleAnalyticsCollection(isEnabled: boolean): void {
+    if(!this.analytics) {
+      throw new Error(MESSAGES.ANALYTICS.ANALYTICS_NOT_INITIALIZED);
+    }
     setAnalyticsCollectionEnabled(this.analytics, isEnabled);
   }
 
@@ -59,6 +74,10 @@ export class FirebaseAnalytics {
   assignUserId(userId: string, options?: AnalyticsCallOptions): void {
     if (!userId) {
       throw new Error(MESSAGES.ANALYTICS.USER_ID_REQUIRED);
+    }
+
+    if(!this.analytics) {
+      throw new Error(MESSAGES.ANALYTICS.ANALYTICS_NOT_INITIALIZED);
     }
 
     setUserId(this.analytics, userId, options);
@@ -76,6 +95,10 @@ export class FirebaseAnalytics {
   ): void {
     if (!properties || Object.keys(properties).length === 0) {
       throw new Error(MESSAGES.ANALYTICS.USER_PROPERTIES_REQUIRED);
+    }
+
+    if(!this.analytics) {
+      throw new Error(MESSAGES.ANALYTICS.ANALYTICS_NOT_INITIALIZED);
     }
 
     setUserProperties(this.analytics, properties, options);
