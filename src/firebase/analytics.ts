@@ -20,6 +20,10 @@ export class FirebaseAnalytics {
       throw new Error(MESSAGES.FIREBASE.APP_NOT_INITIALIZED);
     }
 
+    /**
+    * Prevent analytics from being initialized in a non-browser environment.
+    */
+
     if(typeof window !== 'undefined') {
       this.analytics = getAnalytics(app);
     } else {
@@ -42,7 +46,7 @@ export class FirebaseAnalytics {
     if (!eventName) {
       throw new Error(MESSAGES.ANALYTICS.EVENT_NAME_REQUIRED);
     }
-    
+
     if(!this.analytics) {
       throw new Error(MESSAGES.ANALYTICS.ANALYTICS_NOT_INITIALIZED);
     }
