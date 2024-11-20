@@ -36,12 +36,15 @@ export class FirebaseAuth {
    * @param provider The provider to sign in with.
    * @param options The options for signing in with the provider.
    *
-   * @returns A promise that resolves with the user credential or null if the sign-in fails.
+   * @returns A promise that resolves with `data` if the sign-in is successful, or an error if the sign-in fails.
    */
   async handleProviderSignIn(
     provider: Provider,
     options?: { scopes?: string[] }
-  ): Promise<UserCredential | null> {
+  ): Promise<{
+    data: UserCredential | null;
+    error?: any;
+  }> {
     let authProvider:
       | GoogleAuthProvider
       | GithubAuthProvider
@@ -63,7 +66,7 @@ export class FirebaseAuth {
         authProvider = new FacebookAuthProvider();
         break;
       default:
-        return null;
+        throw new Error(MESSAGES.AUTH.INVALID_PROVIDER(provider));
     }
 
     const validProviders = [
@@ -93,10 +96,15 @@ export class FirebaseAuth {
     }
 
     try {
-      return await signInWithPopup(this.auth, authProvider);
+      const data = await signInWithPopup(this.auth, authProvider);
+      return { data };
     } catch (error) {
       console.error(MESSAGES.AUTH.SIGNIN_FAILED(provider), error);
-      return null;
+
+      return {
+        data: null,
+        error,
+      };
     }
   }
 
