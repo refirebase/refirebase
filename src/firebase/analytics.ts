@@ -21,10 +21,9 @@ export class FirebaseAnalytics {
     }
 
     /**
-    * Prevent analytics from being initialized in a non-browser environment.
-    */
-
-    if(typeof window !== 'undefined') {
+     * Prevent analytics from being initialized in a non-browser environment.
+     */
+    if (typeof window !== "undefined") {
       this.analytics = getAnalytics(app);
     } else {
       this.analytics = null;
@@ -47,7 +46,7 @@ export class FirebaseAnalytics {
       throw new Error(MESSAGES.ANALYTICS.EVENT_NAME_REQUIRED);
     }
 
-    if(!this.analytics) {
+    if (!this.analytics) {
       throw new Error(MESSAGES.ANALYTICS.ANALYTICS_NOT_INITIALIZED);
     }
 
@@ -59,7 +58,7 @@ export class FirebaseAnalytics {
    * @param isEnabled - Whether analytics data collection is enabled.
    */
   toggleAnalyticsCollection(isEnabled: boolean): void {
-    if(!this.analytics) {
+    if (!this.analytics) {
       throw new Error(MESSAGES.ANALYTICS.ANALYTICS_NOT_INITIALIZED);
     }
     setAnalyticsCollectionEnabled(this.analytics, isEnabled);
@@ -76,7 +75,7 @@ export class FirebaseAnalytics {
       throw new Error(MESSAGES.ANALYTICS.USER_ID_REQUIRED);
     }
 
-    if(!this.analytics) {
+    if (!this.analytics) {
       throw new Error(MESSAGES.ANALYTICS.ANALYTICS_NOT_INITIALIZED);
     }
 
@@ -97,7 +96,7 @@ export class FirebaseAnalytics {
       throw new Error(MESSAGES.ANALYTICS.USER_PROPERTIES_REQUIRED);
     }
 
-    if(!this.analytics) {
+    if (!this.analytics) {
       throw new Error(MESSAGES.ANALYTICS.ANALYTICS_NOT_INITIALIZED);
     }
 
