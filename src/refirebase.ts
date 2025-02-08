@@ -1,5 +1,5 @@
 import { init } from './firebase';
-import type { FirebaseConfig } from './types/firebase-config';
+import type { FirebaseConfig, WhereCondition } from './types/firebase/firebase-config';
 
 import { FirestoreDatabase } from './firebase/firestore';
 import { RealtimeDatabase } from './firebase/realtime';
@@ -60,4 +60,5 @@ export type {
   StorageFirebase as RefirebaseStorage,
   FirebaseAuth as RefirebaseAuth,
   FirebaseAnalytics as RefirebaseAnalytics,
+  WhereCondition as RefirebaseWhereCondition,
 };
