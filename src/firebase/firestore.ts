@@ -17,7 +17,6 @@ import {
   WhereFilterOp,
 } from "firebase/firestore";
 
-import { MESSAGES } from "../config/messages";
 import {
   GetByCondition,
   GetById,
@@ -25,6 +24,8 @@ import {
   WhereCondition,
   FirestoreError,
 } from "../types/firebase/firestore";
+
+import { MESSAGES } from "../config/messages";
 
 export class FirestoreDatabase {
   db: FirebaseFirestore;
@@ -37,6 +38,33 @@ export class FirestoreDatabase {
     this.db = getFirestore(app);
   }
 
+  private flattenWhereConditions<T>(
+    conditions: WhereCondition<T>,
+    prefix = ""
+  ): Record<string, unknown> {
+    return Object.entries(conditions).reduce(
+      (acc, [key, value]) => {
+        if (typeof value === "object" && value !== null) {
+          if ("operator" in value) {
+            return { ...acc, [`${prefix}${key}`]: value };
+          }
+
+          if ("not" in value) {
+            return { ...acc, [`${prefix}${key}`]: value };
+          }
+
+          return {
+            ...acc,
+            ...this.flattenWhereConditions(value as WhereCondition<T>, `${key}.`),
+          };
+        }
+
+        return { ...acc, [`${prefix}${key}`]: value };
+      },
+      {} as Record<string, unknown>,
+    );
+  }
+
   private buildWhereQuery<T>(
     collectionRef: CollectionReference,
     conditions?: WhereCondition<T>
@@ -46,23 +74,28 @@ export class FirestoreDatabase {
     }
 
     let q = query(collectionRef);
+    const flattened = this.flattenWhereConditions(conditions);
 
-    Object.entries(conditions).forEach(([field, condition]) => {
-      if (!condition) return;
-
-      if (typeof condition === "object" && "operator" in condition) {
+    Object.entries(flattened).forEach(([field, condition]) => {
+      if (
+        typeof condition === "object" &&
+        condition !== null &&
+        "operator" in condition
+      ) {
         const { operator, value } = condition as {
           operator: WhereFilterOp;
           value: unknown;
         };
-
         q = query(q, where(field, operator, value));
+      } else if (
+        typeof condition === "object" &&
+        condition !== null &&
+        "not" in condition
+      ) {
+        const { not } = condition as { not: unknown };
+        q = query(q, where(field, "!=", not));
       } else {
-        const not = (condition as { not?: unknown })?.not ?? false;
-        const operator = not ? "!=" : "==";
-        const value = not ? (condition as { not: unknown }).not : condition;
-
-        q = query(q, where(field, operator, value));
+        q = query(q, where(field, "==", condition));
       }
     });
 

@@ -12,5 +12,6 @@ export type WhereCondition<T> = {
   [K in keyof T]?:
     | T[K]
     | { operator: WhereFilterOperator; value: T[K] }
-    | { not: T[K] };
+    | { not: T[K] }
+    | (T[K] extends object ? WhereCondition<T[K]> : never);
 };

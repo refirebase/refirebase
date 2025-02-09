@@ -1,4 +1,4 @@
-import type { FirebaseConfig } from "../types/firebase/firebase-config";
+import type { FirebaseConfig } from "../types/firebase/config";
 
 import { type FirebaseApp, deleteApp, initializeApp } from "firebase/app";
 import { FirebaseError } from "firebase/app";
