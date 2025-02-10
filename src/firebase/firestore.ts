@@ -2,6 +2,9 @@ import type { FirebaseApp } from "firebase/app";
 
 import {
   type Firestore as FirebaseFirestore,
+  CollectionReference,
+  Query,
+  WhereFilterOp,
   collection,
   deleteDoc,
   doc,
@@ -12,17 +15,14 @@ import {
   setDoc,
   updateDoc,
   where,
-  CollectionReference,
-  Query,
-  WhereFilterOp,
 } from "firebase/firestore";
 
 import {
   GetByCondition,
   GetById,
   ReturnGenericObj,
-  WhereCondition,
   FirestoreError,
+  WhereCondition,
 } from "../types/firebase/firestore";
 
 import { MESSAGES } from "../config/messages";
@@ -42,28 +42,23 @@ export class FirestoreDatabase {
     conditions: WhereCondition<T>,
     prefix = ""
   ): Record<string, unknown> {
-    return Object.entries(conditions).reduce(
-      (acc, [key, value]) => {
-        if (typeof value === "object" && value !== null) {
-          if ("operator" in value) {
-            return { ...acc, [`${prefix}${key}`]: value };
-          }
-
-          if ("not" in value) {
-            return { ...acc, [`${prefix}${key}`]: value };
-          }
-
-          return {
-            ...acc,
-            ...this.flattenWhereConditions(value as WhereCondition<T>, `${key}.`),
-          };
+    return Object.entries(conditions).reduce((acc, [key, value]) => {
+      const newKey = prefix ? `${prefix}.${key}` : key;
+  
+      if (typeof value === "object" && value !== null) {
+        if ("operator" in value || "not" in value) {
+          acc[newKey] = value;
+        } else {
+          Object.assign(acc, this.flattenWhereConditions(value as WhereCondition<T>, newKey));
         }
-
-        return { ...acc, [`${prefix}${key}`]: value };
-      },
-      {} as Record<string, unknown>,
-    );
+      } else {
+        acc[newKey] = value;
+      }
+  
+      return acc;
+    }, {} as Record<string, unknown>);
   }
+  
 
   private buildWhereQuery<T>(
     collectionRef: CollectionReference,
