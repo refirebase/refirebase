@@ -1,6 +1,6 @@
 {
   "name": "refirebase",
-  "version": "0.0.66",
+  "version": "0.1.0",
   "description": "🔥 New easiest Firebase API",
   "author": "gelzin.com",
   "main": "./dist/index.js",
@@ -23,6 +23,7 @@
     }
   },
   "scripts": {
+    "dev": "tsup src/index.ts --format esm,cjs --dts --watch",
     "build": "tsup src/index.ts --format esm,cjs --dts",
     "test": "jest",
     "test:watch": "jest --watch",

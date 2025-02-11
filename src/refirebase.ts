@@ -1,14 +1,15 @@
-import { init } from './firebase';
-import type { FirebaseConfig } from './types/firebase-config';
+import type { FirebaseApp } from "firebase/app";
 
-import { FirestoreDatabase } from './firebase/firestore';
-import { RealtimeDatabase } from './firebase/realtime';
-import { StorageFirebase } from './firebase/storage';
+import { init } from "./firebase";
 
-import { FirebaseAnalytics } from './firebase/analytics';
-import { FirebaseAuth } from './firebase/auth';
+import { FirebaseAnalytics } from "./firebase/analytics";
+import { FirestoreDatabase } from "./firebase/firestore";
+import { RealtimeDatabase } from "./firebase/realtime";
+import { StorageFirebase } from "./firebase/storage";
+import { FirebaseAuth } from "./firebase/auth";
 
-import type { FirebaseApp } from 'firebase/app';
+import { FirebaseConfig } from "./types/firebase/config";
+import { WhereCondition } from "./types/firebase/firestore";
 
 export class Refirebase {
   private readonly config: FirebaseConfig;
@@ -33,7 +34,7 @@ export class Refirebase {
       !config.appId
     ) {
       throw new Error(
-        'Missing Firebase configuration keys. Please provide all required keys.',
+        "Missing Firebase configuration keys. Please provide all required keys."
       );
     }
 
@@ -60,4 +61,5 @@ export type {
   StorageFirebase as RefirebaseStorage,
   FirebaseAuth as RefirebaseAuth,
   FirebaseAnalytics as RefirebaseAnalytics,
+  WhereCondition as RefirebaseWhereCondition,
 };

@@ -100,14 +100,39 @@ const refirebase = new Refirebase({
 ### Databases
 
 #### Firestore Database Example
-
 ```javascript
 // Import the Refirebase class
 import { db } from '@/config/firebase';
 
-// Get ALL data from the 'users' collection
+// Get all data from the 'users' collection
 const users = db.firestore.get("users");
+
+// Get data with conditions
+const users = db.firestore.get("users", {
+  where: {
+    name: "John",
+  },
+});
+
+// Get data with conditions and index
+const users = db.firestore.get("users", {
+  where: {
+    name: "John",
+    lastName: { not: "Doe" },
+  },
+});
+
+// Get data with conditions and not
+const users = db.firestore.get("users", {
+  where: {
+    name: "John",
+    age: { operator: ">=", value: 18 },
+  },
+});
 ```
+
+> [!WARNING]  
+> For more information about the limitations of the Firestore query, see [Firebase Firestore Query Limitations](https://firebase.google.com/docs/firestore/query-data/queries#query_limitations).
 
 #### Realtime Database Example
 
