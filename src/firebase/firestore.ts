@@ -38,28 +38,46 @@ export class FirestoreDatabase {
     this.db = getFirestore(app);
   }
 
+  /**
+   * Flattens the where conditions into a single object.
+   *
+   * @param conditions - The where conditions to flatten.
+   * @param prefix - The prefix to use for the flattened conditions.
+   *
+   * @returns The flattened conditions.
+   */
   private flattenWhereConditions<T>(
     conditions: WhereCondition<T>,
     prefix = ""
   ): Record<string, unknown> {
     return Object.entries(conditions).reduce((acc, [key, value]) => {
       const newKey = prefix ? `${prefix}.${key}` : key;
-  
+
       if (typeof value === "object" && value !== null) {
         if ("operator" in value || "not" in value) {
           acc[newKey] = value;
         } else {
-          Object.assign(acc, this.flattenWhereConditions(value as WhereCondition<T>, newKey));
+          Object.assign(
+            acc,
+            this.flattenWhereConditions(value as WhereCondition<T>, newKey)
+          );
         }
       } else {
         acc[newKey] = value;
       }
-  
+
       return acc;
     }, {} as Record<string, unknown>);
   }
-  
 
+  /**
+   * Builds a query based on the provided conditions.
+   *
+   * @param collectionRef - The collection reference to build the query on.
+   * @param conditions - The conditions to build the query with.
+   *
+   * @returns The built query.
+   */
   private buildWhereQuery<T>(
     collectionRef: CollectionReference,
     conditions?: WhereCondition<T>
