@@ -16,14 +16,16 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '20'
-          registry-url: 'https://registry.npmjs.org/'
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org/"
 
-      - name: Install PNPM
-        run: npm install -g pnpm
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
 
       - name: Install dependencies
-        run: pnpm install
+        run: bun install
 
       - name: Check existing version
         run: |
@@ -36,7 +38,7 @@ jobs:
 
       - name: Publish package
         run: |
-          if ! pnpm publish --verbose; then
+          if ! bun run build && bun publish --verbose; then
             echo "Error: Failed to publish the package."
             echo "Possible reasons:"
             echo "- You might be trying to publish an already existing version."
