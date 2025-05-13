@@ -41,9 +41,14 @@ jobs:
           echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > .npmrc
           echo "registry=https://registry.npmjs.org/" >> .npmrc
 
-      - name: Publish package
+      - name: Build and Publish package
         run: |
-          if ! bun run build && bun publish --verbose; then
+          if ! bun run build; then
+            echo "Error: Failed to build the package."
+            exit 1
+          fi
+
+          if ! bun publish --verbose; then
             echo "Error: Failed to publish the package."
             echo "Possible reasons:"
             echo "- You might be trying to publish an already existing version."
@@ -51,5 +56,7 @@ jobs:
             echo "- Ensure your package.json is correctly configured."
             exit 1
           fi
+
+          echo "Package published successfully. Version: $target_version"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
