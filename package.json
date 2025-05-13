@@ -31,7 +31,7 @@
     "format:check": "biome format .",
     "format": "biome format --write .",
     "lint": "biome check .",
-    "prepublishOnly": "pnpm run build"
+    "prepublishOnly": "bun run build"
   },
   "license": "MIT",
   "repository": {
