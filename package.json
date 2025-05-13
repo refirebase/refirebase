@@ -1,10 +1,10 @@
 {
   "name": "refirebase",
-  "version": "0.1.2",
+  "version": "0.1.22",
   "description": "🔥 New easiest Firebase API",
   "author": "gelzin.com",
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
     "dist/**"
@@ -16,7 +16,7 @@
     ".": {
       "import": {
         "types": "./dist/index.d.ts",
-        "default": "./dist/index.mjs"
+        "default": "./dist/index.js"
       },
       "require": {
         "types": "./dist/index.d.ts",
@@ -24,7 +24,7 @@
       },
       "browser": {
         "types": "./dist/index.d.ts",
-        "default": "./dist/index.mjs"
+        "default": "./dist/index.js"
       }
     }
   },
