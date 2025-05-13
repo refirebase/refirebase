@@ -40,6 +40,7 @@ jobs:
         run: |
           echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > .npmrc
           echo "registry=https://registry.npmjs.org/" >> .npmrc
+          echo "always-auth=true" >> .npmrc
 
       - name: Build and Publish package
         run: |
@@ -48,7 +49,11 @@ jobs:
             exit 1
           fi
 
-          if ! npm publish --access public; then
+          # Ensure we're authenticated
+          npm whoami
+
+          # Then publish with force flag
+          if ! npm publish --access public --force; then
             echo "Error: Failed to publish the package."
             echo "Possible reasons:"
             echo "- You might be trying to publish an already existing version."
