@@ -1,6 +1,6 @@
 {
   "name": "refirebase",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "🔥 New easiest Firebase API",
   "author": "gelzin.com",
   "main": "./dist/index.js",
