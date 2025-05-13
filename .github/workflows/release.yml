@@ -48,7 +48,7 @@ jobs:
             exit 1
           fi
 
-          if ! bun publish --verbose; then
+          if ! bun publish --no-git-checks --access public; then
             echo "Error: Failed to publish the package."
             echo "Possible reasons:"
             echo "- You might be trying to publish an already existing version."
@@ -57,6 +57,6 @@ jobs:
             exit 1
           fi
 
-          echo "Package published successfully. Version: $target_version"
+          echo "Package published successfully. Version: $(jq -r '.version' package.json)"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
