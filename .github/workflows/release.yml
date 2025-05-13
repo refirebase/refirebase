@@ -36,15 +36,6 @@ jobs:
             exit 1
           fi
 
-      - name: Configure NPM token for Bun
-        run: |
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-          echo "registry=https://registry.npmjs.org/" >> .npmrc
-          echo "always-auth=true" >> .npmrc
-          echo "//registry.npmjs.org/:_password=${NPM_TOKEN}" >> .npmrc
-          echo "//registry.npmjs.org/:username=refirebase" >> .npmrc
-          echo "//registry.npmjs.org/:email=refirebase@github.com" >> .npmrc
-
       - name: Build and Publish package
         run: |
           if ! bun run build; then
@@ -52,8 +43,9 @@ jobs:
             exit 1
           fi
 
-          # Ensure we're authenticated
-          npm whoami
+          # Login to NPM
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          npm login --registry=https://registry.npmjs.org/ --auth-type=legacy
 
           # Then publish with force flag
           if ! npm publish --access public --force; then
