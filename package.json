@@ -25,6 +25,14 @@
       "browser": {
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
+      },
+      "node": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "default": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
       }
     }
   },
