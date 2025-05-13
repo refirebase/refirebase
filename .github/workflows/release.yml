@@ -48,7 +48,7 @@ jobs:
             exit 1
           fi
 
-          if ! bun publish --no-git-checks --access public; then
+          if ! npm publish --access public; then
             echo "Error: Failed to publish the package."
             echo "Possible reasons:"
             echo "- You might be trying to publish an already existing version."
