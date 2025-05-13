@@ -5,6 +5,13 @@ import { FirebaseError } from "firebase/app";
 
 let app: FirebaseApp | null = null;
 
+/**
+ * Initializes the Firebase app with the given configuration.
+ *
+ * @param config - The Firebase configuration.
+ *
+ * @returns The initialized Firebase app.
+ */
 function init(config: FirebaseConfig) {
   if (app) return app;
 
@@ -21,6 +28,11 @@ function init(config: FirebaseConfig) {
   return app;
 }
 
+/**
+ * Destroys the Firebase app.
+ *
+ * @returns A promise that resolves when the app is destroyed.
+ */
 async function destroy() {
   if (!app) return;
 

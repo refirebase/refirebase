@@ -12,7 +12,7 @@ import { FirebaseConfig } from "./types/firebase/config";
 import { WhereCondition } from "./types/firebase/firestore";
 
 export class Refirebase {
-  private readonly config: FirebaseConfig;
+  private readonly internalConfig: FirebaseConfig;
   private readonly app: FirebaseApp;
 
   public readonly db: {
@@ -24,7 +24,33 @@ export class Refirebase {
   public readonly auth: FirebaseAuth;
   public readonly analytics: FirebaseAnalytics;
 
-  constructor(config: FirebaseConfig) {
+  constructor(firebaseConfig?: Partial<FirebaseConfig>) {
+    /**
+     * Try to get values from environment variables first
+     */
+    const envConfig: Partial<FirebaseConfig> = {
+      apiKey: process.env.FIREBASE_API_KEY,
+      authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+      databaseURL: process.env.FIREBASE_DATABASE_URL,
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+      appId: process.env.FIREBASE_APP_ID,
+      measurementId: process.env.FIREBASE_MEASUREMENT_ID,
+    };
+
+    /**
+     * Merge environment variables with provided config, preferring provided config values
+     */
+    const config = {
+      ...envConfig,
+      ...firebaseConfig,
+    };
+
+    /**
+     * Check for required values
+     * If any of the required values are missing, throw an error
+     */
     if (
       !config.apiKey ||
       !config.authDomain ||
@@ -33,14 +59,19 @@ export class Refirebase {
       !config.messagingSenderId ||
       !config.appId
     ) {
+      const missingValues = Object.keys(config).filter(
+        (key) => !config[key as keyof FirebaseConfig]
+      );
+
       throw new Error(
-        "Missing Firebase configuration keys. Please provide all required keys."
+        `Missing Firebase keys: ${missingValues.join(
+          ", "
+        )}. Please provide all required keys either through environment variables or the config object.`
       );
     }
 
-    this.config = config;
-
-    this.app = init(this.config);
+    this.internalConfig = config as FirebaseConfig;
+    this.app = init(this.internalConfig);
 
     this.db = {
       firestore: new FirestoreDatabase(this.app),
