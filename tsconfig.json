@@ -12,7 +12,7 @@
     "target": "es6",
     "module": "commonjs",
     "declaration": true,
-    "outDir": "build",
+    "outDir": "dist",
     "strict": true
   },
   "include": [
