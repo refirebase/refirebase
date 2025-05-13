@@ -26,7 +26,7 @@
   },
   "scripts": {
     "dev": "bun run src/index.ts --watch",
-    "build": "bun build src/index.ts --target=node --outdir=dist",
+    "build": "bun build src/index.ts --target=node --outdir=dist --sourcemap && tsc --emitDeclarationOnly --declaration --outDir dist",
     "format:apply": "biome check --apply .",
     "format:check": "biome format .",
     "format": "biome format --write .",
